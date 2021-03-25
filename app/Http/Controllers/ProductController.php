@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -15,10 +16,20 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with([])
-          ->when(request('admin_id'), function($qry){
-            $qry->where('admin_id', request('admin_id'));
-          })
-          ->paginate();
+            ->when(request('search'), function($qry) {
+                $search = request('search');
+                $qry
+                    ->orWhere('brand', 'like', "%$search%")
+                    ->orWhere('description', 'like', "%$search%")
+                    ->orWhere('note', 'like', "%$search%")
+                    ->orWhere('product_name', 'like', "%$search%")
+                    ->orWhere('product_type', 'like', "%$search%")
+                    ->orWhere('style', 'like', "%$search%")
+                    ->orWhere('shipping_price', 'like', "%$search%")
+                ;
+            })
+            ->where('admin_id', Auth::user()->id)
+            ->paginate();
         return response($products);
     }
 
