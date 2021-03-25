@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate();
+        $orders = Order::with(['product'])
+            ->whereHas('product', function ($qry) {
+                $qry->where('admin_id', Auth::user()->id);
+            })
+            ->paginate()
+        ;
         return response($orders);
     }
 
