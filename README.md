@@ -17,6 +17,75 @@ system requirements:
   php artisan migrate
 ```
 
+3) Import CSV orders into temporary database table and run a clean `INSER SELECT FROM` into `orders` table 
+
+```sql
+
+INSERT INTO orders (
+    product_id,
+    inventory_id,
+    street_address,
+    apartment,
+    city,
+    state,
+    country_code,
+    zip,
+    phone_number,
+    email,
+    name,
+    order_status,
+    payment_ref,
+    transaction_id,
+    payment_amt_cents,
+    ship_charged_cents,
+    ship_cost_cents,
+    subtotal_cents,
+    total_cents,
+    shipper_name,
+    payment_date,
+    shipped_date,
+    tracking_number,
+    tax_total_cents,
+    created_at,
+    updated_at
+)
+SELECT
+    product_id,
+    inventory_id,
+    street_address,
+    apartment,
+    city,
+    state,
+    country_code,
+    zip,
+    phone_number,
+    email,
+    name,
+    order_status,
+    payment_ref,
+    transaction_id,
+    payment_amt_cents,
+    NULLIF(ship_charged_cents, 'NULL') as ship_charged_cents,
+    NULLIF(ship_cost_cents, 'NULL') as ship_cost_cents,
+    subtotal_cents,
+    total_cents,
+    shipper_name,
+    payment_date,
+    shipped_date,
+    tracking_number,
+    tax_total_cents,
+    created_at,
+    updated_at
+FROM import.orders
+```
+3) Import remaining data from CSV files into their respective tables
+
+```
+inventory.csv -> inventories
+users.csv -> users
+products.csv -> products
+```
+
 
 
 ### Front End
