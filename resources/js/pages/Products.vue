@@ -18,6 +18,7 @@
               v-model="filter"
               type="search"
               placeholder="Search"
+              @input="searchProduct"
             ></b-form-input>
 
             <b-input-group-append>
@@ -66,7 +67,7 @@ export default {
       fields: [
         { key: 'id', sortable: true },
         { key: 'product_name', sortable: true },
-        // { key: 'description', sortable: true },
+        { key: 'description', sortable: true },
         { key: 'style', sortable: true },
         { key: 'brand', sortable: true },
         { key: 'product_type', sortable: true },
@@ -85,6 +86,12 @@ export default {
   methods: {
     onPageChange(e) {
       console.log('onPageChange e', e);
+    },
+    searchProduct(search) {
+      console.log('searchProduct', search);
+      app.getProducts({
+        query: { search }
+      });
     },
     dollars,
     date

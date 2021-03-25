@@ -37,6 +37,9 @@
         <template #cell(shipping_price)="{value}">
           {{ dollars(value) }}
         </template>
+        <template #cell(product)="{value}">
+          {{ value.admin_id }}
+        </template>
         <template #cell(created_at)="{value}">
           {{ date(value) }}
         </template>
@@ -80,7 +83,7 @@ export default {
         // { key: 'tax_total_cents', sortable: true },
         { key: 'total_cents', label: 'Total', sortable: true },
         { key: 'created_at', sortable: true },
-        // { key: 'tracking_number', sortable: true },
+        { key: 'product', sortable: true },
         // { key: 'transaction_id', sortable: true },
         // { key: 'updated_at', sortable: true },
         ...[]

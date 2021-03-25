@@ -45,10 +45,12 @@ window.app = new Vue({
   data: () => ({
     me: { loading: true },
     products: { loading: true },
+    inventory: { loading: true },
     orders: { loading: true },
     emptyState: {
       me: {},
       products: { loading: true },
+      inventory: { loading: true },
       orders: { loading: true },
     },
     debug: false,
@@ -64,6 +66,7 @@ window.app = new Vue({
       this.getMe().then((res) => {
         this.getProducts()
         this.getOrders()
+        this.getInventory()
       })
     },
     logout() {
@@ -82,9 +85,7 @@ window.app = new Vue({
     },
     getProducts(payload = {}) {
       const pay = {
-        query: {
-          admin_id: app.me.id,
-        },
+        query: {},
         ...payload
       }
       return Api.getProducts(pay).then(({ data }) =>
@@ -101,6 +102,19 @@ window.app = new Vue({
         ...payload
       }
       return Api.getOrders(pay).then(({ data }) =>
+        setTimeout(() => {
+          app.orders = data
+        }, 800)
+      );
+    },
+    getInventory(payload = {}) {
+      const pay = {
+        // query: {
+        //   admin_id: app.me.id,
+        // },
+        // ...payload
+      }
+      return Api.getInventory(pay).then(({ data }) =>
         setTimeout(() => {
           app.orders = data
         }, 800)

@@ -53,6 +53,10 @@ export const Api = {
     const q = toQueryString(query)
     return await axios.get(`/api/orders?${q}`);
   },
+  getInventory: async ({ query } = {}) => {
+    const q = toQueryString(query)
+    return await axios.get(`/api/inventories?${q}`);
+  },
 };
 
 export const formatLocation = loc => {
